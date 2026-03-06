@@ -1,0 +1,11 @@
+nexus:
+  hostip: 192.168.123.180
+  hostname: nexus
+  proto: http
+  port: 8081
+  user: admin
+  password: ""
+  at_hosts: true
+  tags: []
+
+api_nexus: {}

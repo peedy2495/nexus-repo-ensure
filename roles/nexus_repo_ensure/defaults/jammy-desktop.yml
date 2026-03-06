@@ -1,0 +1,100 @@
+nexus_repositories:
+  - name: "ubuntu-jammy"
+    format: "apt"
+    storage:
+      blobStoreName: "ubuntu-jammy"
+    apt:
+      distribution: "jammy"
+    proxy:
+      remoteUrl: "http://de.archive.ubuntu.com/ubuntu"
+    tag: "ubuntu-desktop"
+
+  - name: "ubuntu-jammy-updates"
+    format: "apt"
+    storage:
+      blobStoreName: "ubuntu-jammy"
+    apt:
+      distribution: "jammy-updates"
+    proxy:
+      remoteUrl: "http://de.archive.ubuntu.com/ubuntu"
+    tag: "ubuntu-desktop"
+  
+  - name: "ubuntu-jammy-backports"
+    format: "apt"
+    storage:
+      blobStoreName: "ubuntu-jammy"
+    apt:
+      distribution: "jammy-backports"
+    proxy:
+      remoteUrl: "http://de.archive.ubuntu.com/ubuntu"
+    tag: "ubuntu-desktop"
+
+  - name: "ubuntu-jammy-security"
+    format: "apt"
+    storage:
+      blobStoreName: "ubuntu-jammy"
+    apt:
+      distribution: "jammy-security"
+    proxy:
+      remoteUrl: "http://security.ubuntu.com/ubuntu"
+    tag: "ubuntu-desktop"
+  
+  - name: "ubuntu-jammy-desktop-ppa-xtradeb-applications"
+    format: "apt"
+    storage:
+      blobStoreName: "ubuntu-jammy"
+    apt:
+      distribution: "jammy"
+    proxy:
+      remoteUrl: "https://ppa.launchpadcontent.net/xtradeb/apps/ubuntu/"
+    tag: "ubuntu-xtradeb-apps"
+
+  - name: "ubuntu-jammy-brave"
+    format: "apt"
+    storage:
+      blobStoreName: "ubuntu-jammy"
+    apt:
+      distribution: "stable"
+    proxy:
+      remoteUrl: "https://brave-browser-apt-release.s3.brave.com/"
+    tag: "ubuntu-brave"
+
+  - name: "ubuntu-jammy-ppa-ubuntugis"
+    format: "apt"
+    storage:
+      blobStoreName: "ubuntu-jammy"
+    apt:
+      distribution: "jammy"
+    proxy:
+      remoteUrl: "https://ppa.launchpadcontent.net/ubuntugis/ppa/ubuntu/"
+    tag: "ubuntu-gis"
+
+  - name: "ubuntu-jammy-ppa-mozillateam"
+    format: "apt"
+    storage:
+      blobStoreName: "ubuntu-jammy"
+    apt:
+      distribution: "jammy"
+    proxy:
+      remoteUrl: "https://ppa.launchpadcontent.net/mozillateam/ppa/ubuntu"
+    tag: "ppa-mozilla"
+
+  - name: "google-chrome"
+    format: "apt"
+    storage:
+      blobStoreName: "google"
+    apt:
+      distribution: "stable"
+    proxy:
+      remoteUrl: "http://dl.google.com/linux/chrome/deb"
+    tag: "chrome"
+
+  - name: "ubuntu-microsoft-vscode"
+    format: "apt"
+    storage:
+      blobStoreName: "microsoft-vscode"
+    apt:
+      distribution: "stable"
+    proxy:
+      remoteUrl: "https://packages.microsoft.com/repos/vscode"
+    tag: "vscode"

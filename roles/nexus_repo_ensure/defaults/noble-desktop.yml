@@ -1,0 +1,100 @@
+nexus_repositories:
+  - name: "ubuntu-noble-desktop"
+    format: "apt"
+    storage:
+      blobStoreName: "ubuntu-noble"
+    apt:
+      distribution: "noble"
+    proxy:
+      remoteUrl: "http://de.archive.ubuntu.com/ubuntu"
+    tag: "ubuntu-desktop"
+
+  - name: "ubuntu-noble-desktop-updates"
+    format: "apt"
+    storage:
+      blobStoreName: "ubuntu-noble"
+    apt:
+      distribution: "noble-updates"
+    proxy:
+      remoteUrl: "http://de.archive.ubuntu.com/ubuntu"
+    tag: "ubuntu-desktop"
+  
+  - name: "ubuntu-noble-desktop-backports"
+    format: "apt"
+    storage:
+      blobStoreName: "ubuntu-noble"
+    apt:
+      distribution: "noble-backports"
+    proxy:
+      remoteUrl: "http://de.archive.ubuntu.com/ubuntu"
+    tag: "ubuntu-desktop"
+
+  - name: "ubuntu-noble-desktop-security"
+    format: "apt"
+    storage:
+      blobStoreName: "ubuntu-noble"
+    apt:
+      distribution: "noble-security"
+    proxy:
+      remoteUrl: "http://security.ubuntu.com/ubuntu"
+    tag: "ubuntu-desktop"
+  
+  - name: "ubuntu-noble-desktop-ppa-xtradeb-applications"
+    format: "apt"
+    storage:
+      blobStoreName: "ubuntu-noble"
+    apt:
+      distribution: "noble"
+    proxy:
+      remoteUrl: "https://ppa.launchpadcontent.net/xtradeb/apps/ubuntu/"
+    tag: "ubuntu-xtradeb-apps"
+
+  - name: "ubuntu-noble-brave"
+    format: "apt"
+    storage:
+      blobStoreName: "ubuntu-noble"
+    apt:
+      distribution: "stable"
+    proxy:
+      remoteUrl: "https://brave-browser-apt-release.s3.brave.com/"
+    tag: "ubuntu-brave"
+
+  #- name: "ubuntu-noble-ppa-ubuntugis"
+  #  format: "apt"
+  #  storage:
+  #    blobStoreName: "ubuntu-noble"
+  #  apt:
+  #    distribution: "noble"
+  #  proxy:
+  #    remoteUrl: "https://ppa.launchpadcontent.net/ubuntugis/ppa/ubuntu/"
+  #  tag: "ubuntu-gis"
+
+  #- name: "ubuntu-noble-ppa-mozillateam"
+  #  format: "apt"
+  #  storage:
+  #    blobStoreName: "ubuntu-noble"
+  #  apt:
+  #    distribution: "noble"
+  #  proxy:
+  #    remoteUrl: "https://ppa.launchpadcontent.net/mozillateam/ppa/ubuntu"
+  #  tag: "ppa-mozilla"
+
+  - name: "google-chrome"
+    format: "apt"
+    storage:
+      blobStoreName: "google"
+    apt:
+      distribution: "stable"
+    proxy:
+      remoteUrl: "http://dl.google.com/linux/chrome/deb"
+    tag: "chrome"
+
+  - name: "ubuntu-microsoft-vscode"
+    format: "apt"
+    storage:
+      blobStoreName: "microsoft-vscode"
+    apt:
+      distribution: "stable"
+    proxy:
+      remoteUrl: "https://packages.microsoft.com/repos/vscode"
+    tag: "vscode"

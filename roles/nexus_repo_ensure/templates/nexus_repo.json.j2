@@ -1,0 +1,54 @@
+{
+  "name": "{{ item.name }}",
+  "online": {{ item.online | default(true) | lower }},
+  "format": "{{ item.format }}",
+  "type": "{{ item.type | default('proxy', true) }}",
+  "storage": {
+    "blobStoreName": "{{ item.storage.blobStoreName }}",
+    "strictContentTypeValidation": {{ item.storage.strictContentTypeValidation | default(true) | lower }},
+    "writePolicy": "{{ item.storage.writePolicy | default('ALLOW', true) }}"
+  }
+  {% if item.cleanup is defined %}
+  , "cleanup": {
+    "policyNames": {{ item.cleanup.policyNames | to_json }}
+  }
+  {% endif %}
+  {% if item.apt is defined %}
+  , "apt": {
+    "distribution": "{{ item.apt.distribution }}",
+    "flat": {{ item.apt.flat | default(false) | lower }}
+  }
+  {% endif %}
+  {% if item.raw is defined %}
+  , "raw": {
+    "contentDisposition": {{ item.raw.contentDisposition | default('ATTACHMENT', true) | upper }}
+  }
+  {% endif %}
+  {% if item.proxy is defined %}
+  , "proxy": {
+    "remoteUrl": "{{ item.proxy.remoteUrl }}",
+    "contentMaxAge": {{ item.proxy.contentMaxAge | default(1440, true) }},
+    "metadataMaxAge": {{ item.proxy.metadataMaxAge | default(1440, true) }}
+  }
+  {% endif %}
+  , "negativeCache": {
+    "enabled": {{ item.negativeCache.enabled | default(true) | lower }},
+    "timeToLive": {{ item.negativeCache.timeToLive | default(1440, true) }}
+  }
+  , "httpClient": {
+    "blocked": {{ item.httpClient.blocked | default(false) | lower }},
+    "autoBlock": {{ item.httpClient.autoBlock | default(true) | lower }},
+    "connection": {
+      "retries": {{ item.httpClient.connection.retries | default('null', true) }},
+      "userAgentSuffix": {{ item.httpClient.connection.userAgentSuffix | default('null', true) }},
+      "timeout": {{ item.httpClient.connection.timeout | default('null', true) }},
+      "enableCircularRedirects": {{ item.httpClient.connection.enableCircularRedirects | default(false) | lower }},
+      "enableCookies": {{ item.httpClient.connection.enableCookies | default(false) | lower }},
+      "useTrustStore": {{ item.httpClient.connection.useTrustStore | default(false) | lower }}
+    },
+    "authentication": {{ item.httpClient.authentication | default('null', true) }}
+  }
+  {% if item.routingRuleName is defined %}
+  , "routingRuleName": "{{ item.routingRuleName }}"
+  {% endif %}
+}

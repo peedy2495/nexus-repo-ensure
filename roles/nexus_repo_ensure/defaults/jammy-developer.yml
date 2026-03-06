@@ -1,0 +1,59 @@
+nexus_repositories:
+
+  - name: "ubuntu-nodejs"
+    format: "apt"
+    storage:
+      blobStoreName: "ubuntu-nodesource"
+    apt:
+      distribution: "nodistro"
+    proxy:
+      remoteUrl: "https://deb.nodesource.com/node_20.x"
+    tag: "node_20"
+
+  - name: "ubuntu-libnvidia-container"
+    format: "apt"
+    storage:
+      blobStoreName: "ubuntu-jammy"
+    apt:
+      distribution: "jammy"
+    proxy:
+      remoteUrl: "https://nvidia.github.io/libnvidia-container/stable/deb/amd64"
+    tag: "ubuntu-libnvidia-container"
+
+  - name: "k8s.io"
+    format: "raw"
+    storage:
+      blobStoreName: "k8s.io"
+    proxy:
+      remoteUrl: "https://dl.k8s.io"
+    tag: "kubernetes-tools"
+
+  - name: "ubuntu-jammy-docker-ce"
+    format: "apt"
+    storage:
+      blobStoreName: "ubuntu-jammy"
+    apt:
+      distribution: "jammy"
+    proxy:
+      remoteUrl: "https://download.docker.com/linux/ubuntu"
+    tag: "ubuntu-docker-ce"
+
+  - name: "ubuntu-jammy-ppa-golang-backports"
+    format: "apt"
+    storage:
+      blobStoreName: "ubuntu-jammy"
+    apt:
+      distribution: "jammy"
+    proxy:
+      remoteUrl: "https://ppa.launchpadcontent.net/longsleep/golang-backports/ubuntu/"
+    tag: "ubuntu-ppa-golang-backports"
+
+  - name: "ubuntu-jammy-ppa-ansible"
+    format: "apt"
+    storage:
+      blobStoreName: "ubuntu-jammy"
+    apt:
+      distribution: "jammy"
+    proxy:
+      remoteUrl: "https://ppa.launchpadcontent.net/ansible/ansible/ubuntu/"
+    tag: "ubuntu-ppa-ansible"

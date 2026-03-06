@@ -1,0 +1,24 @@
+nexus_repositories:
+  - name: "raw-api.github"
+    format: "raw"
+    storage:
+      blobStoreName: "raw-github"
+    proxy:
+      remoteUrl: "https://api.github.com"
+    tag: "github"
+
+  - name: "raw-github"
+    format: "raw"
+    storage:
+      blobStoreName: "raw-github"
+    proxy:
+      remoteUrl: "https://github.com"
+    tag: "github"
+
+  - name: "raw-githubusercontent"
+    format: "raw"
+    storage:
+      blobStoreName: "raw-github"
+    proxy:
+      remoteUrl: "https://raw.githubusercontent.com"
+    tag: "github"

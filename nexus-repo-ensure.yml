@@ -1,0 +1,5 @@
+- name: Ensure Nexus repositories
+  hosts: localhost
+  gather_facts: false
+  roles:
+    - role: nexus_repo_ensure

@@ -1,0 +1,124 @@
+- name: Nexus - prepare hosts file for name resolution
+  ansible.builtin.lineinfile:
+    dest: /etc/hosts
+    line: "{{ api_nexus.hostip | default(nexus.hostip) }} {{ api_nexus.hostname | default(nexus.hostname) }}"
+    state: present
+  when: api_nexus.at_hosts | default(nexus.at_hosts)
+  tags:
+    - always
+
+- name: Nexus - Initialize nexus_repositories_combined
+  ansible.builtin.set_fact:
+    nexus_repositories_combined: []
+  tags:
+    - always
+
+- name: Nexus - Load and combine nexus repository definitions
+  ansible.builtin.set_fact:
+    nexus_repositories_combined: "{{ nexus_repositories_combined + (lookup('file', role_path + '/defaults/' + (item if (item | regex_search('\\.ya?ml$')) else item + '.yml')) | from_yaml).nexus_repositories }}"
+  loop: "{{ repository_groups }}"
+  tags:
+    - always
+
+- name: Nexus - filter repositories by custom tags
+  ansible.builtin.set_fact:
+    nexus_repositories_selected: >-
+      {{
+        nexus_repositories_combined
+        if ((api_nexus.tags | default(nexus.tags)) | length == 0)
+        else (nexus_repositories_combined | selectattr('tag', 'in', (api_nexus.tags | default(nexus.tags))) | list)
+      }}
+  tags:
+    - always
+
+- name: Nexus - determine blobstores needed
+  ansible.builtin.set_fact:
+    nexus_blobstores: "{{ nexus_repositories_selected | map(attribute='storage.blobStoreName') | list | unique }}"
+  tags:
+    - always
+
+- name: Nexus - get current repositories
+  ansible.builtin.uri:
+    url: "{{ api_nexus.proto | default(nexus.proto) }}://{{ api_nexus.hostip | default(nexus.hostip) }}:{{ api_nexus.port | default(nexus.port) }}/service/rest/v1/repositories"
+    force_basic_auth: yes
+    user: "{{ api_nexus.user | default(nexus.user) }}"
+    password: "{{ api_nexus.password | default(nexus.password) }}"
+    return_content: true
+  register: repos
+  tags:
+    - always
+
+- name: Nexus - get current blobstores
+  ansible.builtin.uri:
+    url: "{{ api_nexus.proto | default(nexus.proto) }}://{{ api_nexus.hostip | default(nexus.hostip) }}:{{ api_nexus.port | default(nexus.port) }}/service/rest/v1/blobstores"
+    force_basic_auth: yes
+    user: "{{ api_nexus.user | default(nexus.user) }}"
+    password: "{{ api_nexus.password | default(nexus.password) }}"
+    return_content: true
+  register: blobstores
+  tags:
+    - always
+
+- name: Nexus - create missing blobstores
+  ansible.builtin.uri:
+    url: "{{ api_nexus.proto | default(nexus.proto) }}://{{ api_nexus.hostip | default(nexus.hostip) }}:{{ api_nexus.port | default(nexus.port) }}/service/rest/v1/blobstores/file"
+    force_basic_auth: yes
+    user: "{{ api_nexus.user | default(nexus.user) }}"
+    password: "{{ api_nexus.password | default(nexus.password) }}"
+    method: POST
+    headers:
+      Content-Type: "application/json"
+    body: |
+      {
+        "path": "{{ item }}",
+        "name": "{{ item }}"
+      }
+    body_format: json
+  register: blob_creation_result
+  loop: "{{ nexus_blobstores }}"
+  failed_when: blob_creation_result.status not in [204]
+  changed_when: blob_creation_result.status in [204]
+  when: >
+    ( item not in blobstores.json | map(attribute='name') | list )
+  tags:
+    - always
+
+- name: Nexus - create missing repositories
+  ansible.builtin.uri:
+    url: "{{ api_nexus.proto | default(nexus.proto) }}://{{ api_nexus.hostip | default(nexus.hostip) }}:{{ api_nexus.port | default(nexus.port) }}/service/rest/v1/repositories/{{ item.format }}/{{ item.get('type', 'proxy') }}"
+    force_basic_auth: yes
+    user: "{{ api_nexus.user | default(nexus.user) }}"
+    password: "{{ api_nexus.password | default(nexus.password) }}"
+    method: POST
+    headers:
+       Content-Type: "application/json"
+    body: "{{ lookup('template', 'templates/nexus_repo.json.j2') }}"
+    body_format: json
+  register: repo_creation_result
+  loop: "{{ nexus_repositories_selected }}"
+  failed_when: repo_creation_result.status not in [201]
+  changed_when: repo_creation_result.status in [201]
+  when: >
+    ( item.name not in repos.json | map(attribute='name') | list )
+  tags:
+    - always
+
+- name: Nexus - update repositoy settings
+  ansible.builtin.uri:
+    url: "{{ api_nexus.proto | default(nexus.proto) }}://{{ api_nexus.hostip | default(nexus.hostip) }}:{{ api_nexus.port | default(nexus.port) }}/service/rest/v1/repositories/{{ item.format | replace('maven2', 'maven') }}/{{ item.get('type', 'proxy') }}/{{item.name}}"
+    force_basic_auth: yes
+    user: "{{ api_nexus.user | default(nexus.user) }}"
+    password: "{{ api_nexus.password | default(nexus.password) }}"
+    method: PUT
+    headers:
+       Content-Type: "application/json"
+    body: "{{ lookup('template', 'templates/nexus_repo.json.j2') }}"
+    body_format: json
+  register: repo_creation_result
+  loop: "{{ nexus_repositories_selected }}"
+  failed_when: repo_creation_result.status not in [204]
+  changed_when: repo_creation_result.status in [204]
+  when: >
+    ( item.name in repos.json | map(attribute='name') | list )
+  tags:
+    - always

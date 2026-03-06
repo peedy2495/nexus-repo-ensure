@@ -1,0 +1,9 @@
+nexus_repositories:
+
+  - name: "pypi-org"
+    format: "raw"
+    storage:
+      blobStoreName: "pypi"
+    proxy:
+      remoteUrl: "https://pypi.org"
+    tag: "pypi"

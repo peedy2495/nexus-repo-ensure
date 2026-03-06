@@ -1,0 +1,9 @@
+nexus_repositories:
+
+  - name: "ubuntu-archive"
+    format: "raw"
+    storage:
+      blobStoreName: "ubuntu-misc"
+    proxy:
+      remoteUrl: "http://archive.ubuntu.com/ubuntu/"
+    tag: "ubuntu-archive"
