@@ -1,11 +1,11 @@
-- name: Nexus - prepare hosts file for name resolution
-  ansible.builtin.lineinfile:
-    dest: /etc/hosts
-    line: "{{ api_nexus.hostip | default(nexus.hostip) }} {{ api_nexus.hostname | default(nexus.hostname) }}"
-    state: present
-  when: api_nexus.at_hosts | default(nexus.at_hosts)
-  tags:
-    - always
+#- name: Nexus - prepare hosts file for name resolution
+#  ansible.builtin.lineinfile:
+#    dest: /etc/hosts
+#    line: "{{ api_nexus.hostip | default(nexus.hostip) }} {{ api_nexus.hostname | default(nexus.hostname) }}"
+#    state: present
+#  when: api_nexus.at_hosts | default(nexus.at_hosts)
+#  tags:
+#    - always
 
 - name: Nexus - Initialize nexus_repositories_combined
   ansible.builtin.set_fact:
