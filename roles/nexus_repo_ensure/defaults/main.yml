@@ -4,7 +4,7 @@ nexus:
   proto: http
   port: 8081
   user: admin
-  password: ""
+  password: "{{ nexus_password }}"
   at_hosts: true
   tags: []
 
